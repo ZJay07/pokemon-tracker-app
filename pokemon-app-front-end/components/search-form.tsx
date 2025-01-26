@@ -3,12 +3,10 @@
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { searchCards } from "@/lib/api"
-import type { Card } from "@/types/api"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
 
 interface SearchFormProps {
-  onSearchResults: (results: Card[]) => void
+  onSearchResults: (results: any[]) => void
 }
 
 export function SearchForm({ onSearchResults }: SearchFormProps) {
@@ -21,12 +19,16 @@ export function SearchForm({ onSearchResults }: SearchFormProps) {
     setIsLoading(true)
 
     try {
-      const data = await searchCards(search)
+      const response = await fetch(`http://localhost:8000/pokemon/get_pokemon/?search=${encodeURIComponent(search)}`)
+      if (!response.ok) {
+        throw new Error("Failed to fetch cards")
+      }
+      const data = await response.json()
       onSearchResults(data.results)
     } catch (error) {
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to search cards",
+        description: "Failed to search cards. Please try again.",
         variant: "destructive",
       })
     } finally {
@@ -35,20 +37,19 @@ export function SearchForm({ onSearchResults }: SearchFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mb-6">
-      <div className="flex">
-        <Input
-          type="text"
-          placeholder="Search cards..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="flex-grow mr-2"
-        />
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Searching..." : "Search"}
-        </Button>
-      </div>
+    <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
+      <Input
+        type="text"
+        placeholder="Search for a card..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="flex-1"
+      />
+      <Button type="submit" disabled={isLoading}>
+        {isLoading ? "Searching..." : "Search"}
+      </Button>
     </form>
   )
 }
+
 

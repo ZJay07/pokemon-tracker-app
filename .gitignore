@@ -1,1 +1,6 @@
 /pokemon_dev_env/
+.env
+*.pyc
+
+db.sqlite3
+
