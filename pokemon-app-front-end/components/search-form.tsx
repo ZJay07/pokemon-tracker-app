@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 
 export function SearchForm() {
   const [search, setSearch] = useState("")
+  const [setId, setSetId] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
@@ -15,9 +16,12 @@ export function SearchForm() {
     setIsLoading(true)
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/pokemon/get_pokemon/?name=${encodeURIComponent(search)}`)
+      const response = await fetch(
+        `http://127.0.0.1:8000/pokemon/get_card/?set_id=${encodeURIComponent(setId)}&name=${encodeURIComponent(search)}`,
+      )
       if (response.ok) {
-        router.push(`/pokemon/${encodeURIComponent(search)}`)
+        const data = await response.json()
+        router.push(`/pokemon/${encodeURIComponent(search)}?set_id=${encodeURIComponent(setId)}`)
       } else {
         console.error("Error searching for Pokémon:", response.statusText)
       }
@@ -29,19 +33,26 @@ export function SearchForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mb-6">
-      <div className="flex">
+    <form onSubmit={handleSubmit} className="mb-6 space-y-4">
+      <div className="flex space-x-2">
         <Input
           type="text"
-          placeholder="Search Pokémon..."
+          placeholder="Pokémon Name"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="flex-grow mr-2"
+          className="flex-grow"
         />
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Searching..." : "Search"}
-        </Button>
+        <Input
+          type="text"
+          placeholder="Set ID"
+          value={setId}
+          onChange={(e) => setSetId(e.target.value)}
+          className="w-1/3"
+        />
       </div>
+      <Button type="submit" disabled={isLoading} className="w-full">
+        {isLoading ? "Searching..." : "Search"}
+      </Button>
     </form>
   )
 }
