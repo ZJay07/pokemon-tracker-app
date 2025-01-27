@@ -5,7 +5,6 @@ interface CardDetailsProps {
   card: {
     name: string
     set_name: string
-    number: string
     rarity: string
     image_url: string
     price: number
@@ -29,10 +28,6 @@ export function CardDetails({ card }: CardDetailsProps) {
             <dd className="mt-1 text-sm text-gray-900">{card.set_name}</dd>
           </div>
           <div>
-            <dt className="text-sm font-medium text-gray-500">Number</dt>
-            <dd className="mt-1 text-sm text-gray-900">{card.number}</dd>
-          </div>
-          <div>
             <dt className="text-sm font-medium text-gray-500">Rarity</dt>
             <dd className="mt-1 text-sm text-gray-900">{card.rarity}</dd>
           </div>
@@ -40,7 +35,7 @@ export function CardDetails({ card }: CardDetailsProps) {
             <dt className="text-sm font-medium text-gray-500">Price</dt>
             <dd className="mt-1 text-sm text-gray-900">${card.price.toFixed(2)}</dd>
           </div>
-          <div className="col-span-2">
+          <div>
             <dt className="text-sm font-medium text-gray-500">Last Updated</dt>
             <dd className="mt-1 text-sm text-gray-900">{new Date(card.last_updated).toLocaleString()}</dd>
           </div>
@@ -49,4 +44,3 @@ export function CardDetails({ card }: CardDetailsProps) {
     </Card>
   )
 }
-

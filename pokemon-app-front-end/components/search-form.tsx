@@ -1,55 +1,48 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { useToast } from "@/hooks/use-toast"
 
-interface SearchFormProps {
-  onSearchResults: (results: any[]) => void
-}
-
-export function SearchForm({ onSearchResults }: SearchFormProps) {
+export function SearchForm() {
   const [search, setSearch] = useState("")
   const [isLoading, setIsLoading] = useState(false)
-  const { toast } = useToast()
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
     try {
-      const response = await fetch(`http://localhost:8000/pokemon/get_pokemon/?search=${encodeURIComponent(search)}`)
-      if (!response.ok) {
-        throw new Error("Failed to fetch cards")
+      const response = await fetch(`http://127.0.0.1:8000/pokemon/get_pokemon/?name=${encodeURIComponent(search)}`)
+      if (response.ok) {
+        router.push(`/pokemon/${encodeURIComponent(search)}`)
+      } else {
+        console.error("Error searching for Pokémon:", response.statusText)
       }
-      const data = await response.json()
-      onSearchResults(data.results)
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to search cards. Please try again.",
-        variant: "destructive",
-      })
+      console.error("Error searching for Pokémon:", error)
     } finally {
       setIsLoading(false)
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
-      <Input
-        type="text"
-        placeholder="Search for a card..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="flex-1"
-      />
-      <Button type="submit" disabled={isLoading}>
-        {isLoading ? "Searching..." : "Search"}
-      </Button>
+    <form onSubmit={handleSubmit} className="mb-6">
+      <div className="flex">
+        <Input
+          type="text"
+          placeholder="Search Pokémon..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="flex-grow mr-2"
+        />
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? "Searching..." : "Search"}
+        </Button>
+      </div>
     </form>
   )
 }
-
 

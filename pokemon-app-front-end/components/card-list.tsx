@@ -2,7 +2,6 @@ interface Card {
   id: number
   name: string
   set_name: string
-  number: string
   rarity: string
   price: number
 }
@@ -20,7 +19,6 @@ export function CardList({ cards, onCardSelect }: CardListProps) {
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Set</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Number</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rarity</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
           </tr>
@@ -30,7 +28,6 @@ export function CardList({ cards, onCardSelect }: CardListProps) {
             <tr key={card.id} onClick={() => onCardSelect(card)} className="cursor-pointer hover:bg-gray-100">
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{card.name}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{card.set_name}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{card.number}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{card.rarity}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${card.price.toFixed(2)}</td>
             </tr>

@@ -7,7 +7,7 @@ import { CollectionSummary } from "@/components/collection-summary"
 import { ValueChart } from "@/components/value-chart"
 import { RarityDistribution } from "@/components/rarity-distribution"
 import { SearchForm } from "@/components/search-form"
-import { CardGrid } from "@/components/card-grid"
+// import { CardGrid } from "@/components/card-grid"
 import { Toaster } from "@/components/ui/toaster"
 
 interface PokemonCard {
@@ -54,7 +54,7 @@ export default function DashboardPage() {
           <h2 className="text-lg leading-6 font-medium text-gray-900 mb-4">Pokémon Card Search</h2>
           <Card className="p-6">
             <SearchForm onSearchResults={setSearchResults} />
-            <CardGrid cards={searchResults} />
+            {/* <CardGrid cards={searchResults} /> */}
           </Card>
         </div>
       </div>
